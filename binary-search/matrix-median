@@ -1,0 +1,61 @@
+TLE
+
+https://www.interviewbit.com/problems/matrix-median/
+
+public class Solution {
+    int m;
+    int n;
+    int dup;   
+    public int findMedian(int[][] A) {
+        m = A.length;
+        n = A[0].length;
+        int mid = (m*n)/2;
+        int median = (m*n)%2==0?mid:mid+1; 
+        for(int i=0;i<m;i++){
+            for(int j=0;j<n;j++){  
+                int med = bin(i,j,A,median);  
+                if(med == median || median>=med-dup && median<med){
+                    return A[i][j];
+                }
+            }
+        }
+        return 0;
+    }
+    
+    int bin(int row,int col, int[][] A, int median){
+        dup = 0;
+        int total = col+1;
+        for(int i=0;i<m;i++){
+            if(i != row){
+                int in = bin(A[row][col],i,A); 
+                total += in;
+            }
+        }
+        return total;
+    }
+    
+    
+    int bin(int val,int row,int[][] A){
+        int l = 0;
+        int r = n-1;
+        int c = 0;
+        while(l<=r){
+            int mid = l + (r-l)/2;
+            
+            if(A[row][mid]<=val){
+                if(A[row][mid]==val){
+                    dup++;
+                }
+                l = mid+1;
+            }else{
+                r = mid -1;
+            }
+        }
+        return l; 
+    }
+}
+
+
+
+Optimised
+
